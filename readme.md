@@ -3,7 +3,7 @@
 <br>
 <h2>about</h2>
 helix is an algorithmic spring reverb, which excels at spring "drip" sounds. it's based around a technique suggested by geraint from 
-[signalsmith](https://www.signalsmith-audio.co.uk), to emulate the <i>chirp</i> from an authentic spring reverb, involving treating the stft of the feedback signal as a filterbank, and delaying each band by an offset, where said offset increases logarithmically depening on its bin number.<br> 
+signalsmith (github link not working :/), to emulate the <i>chirp</i> from an authentic spring reverb, involving treating the stft of the feedback signal as a filterbank, and delaying each band by an offset, where said offset increases logarithmically depening on its bin number.<br> 
 <b> it also doesn't have a ui yet... </b> 
 
 <h2>inspirational quotes</h3> 
