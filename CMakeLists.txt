@@ -21,14 +21,17 @@ source/audio/FrequencyDelay.cpp
 )
 
 target_include_directories(Helix PUBLIC 
-${CMAKE_CURRENT_SOURCE_DIR}/Include
-${CMAKE_CURRENT_SOURCE_DIR}/Source)
+${CMAKE_CURRENT_SOURCE_DIR}/include
+${CMAKE_CURRENT_SOURCE_DIR}/include/Asio
+${CMAKE_CURRENT_SOURCE_DIR}/source)
 
 
 target_compile_definitions(Helix PUBLIC 
 JUCE_WEB_BROWSER=0
 JUCE_USE_CURL=0
-JUCE_VST3_CAN_REPLACE_VST2=0)
+JUCE_VST3_CAN_REPLACE_VST2=0
+JUCE_ASIO=1
+)
 
 #juce_add_binary_data(SprinklerData SOURCES
 # Resources/NotoSansJP-Regular.otf
