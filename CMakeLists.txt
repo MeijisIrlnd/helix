@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.7.2)
 project(Helix VERSION 0.0.1)
-find_package(JUCE CONFIG REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+    JUCE 
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git 
+    GIT_TAG 7.0.5
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(JUCE)
+#find_package(JUCE CONFIG REQUIRED)
 
 
 juce_add_plugin(
@@ -11,13 +19,12 @@ juce_add_plugin(
     PRODUCT_NAME "Helix"
 )
 juce_add_module(${CMAKE_CURRENT_SOURCE_DIR}/Modules/SDSP)
+
+add_subdirectory(source)
 juce_generate_juce_header(Helix)
 
 target_sources(Helix PRIVATE 
-source/PluginProcessor.cpp
-source/PluginEditor.cpp 
-source/audio/HelixProcessor.cpp
-source/audio/FrequencyDelay.cpp
+    ${PROJECT_SOURCE}
 )
 
 target_include_directories(Helix PUBLIC 
