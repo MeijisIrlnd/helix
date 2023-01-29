@@ -10,7 +10,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(JUCE)
 #find_package(JUCE CONFIG REQUIRED)
 
-
+set(CMAKE_CXX_STANDARD 20)
 juce_add_plugin(
     Helix 
     PLUGIN_MANUFACTURER_CODE SMPI
