@@ -1,4 +1,4 @@
-![Status](https://github.com/MeijisIrlnd/Helix/actions/workflows/ci.yml/badge.svg)
+![Status](https://github.com/MeijisIrlnd/Helix/actions/workflows/cmake.yml/badge.svg)
 <h1>helix</h1>
 <h3>an algorithmic spring reverb</h3>
 
