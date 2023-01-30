@@ -51,9 +51,42 @@ namespace Helix
                 return *this;
             }
         };
+        struct ComplexDelayLine { 
+            std::array<juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Thiran>, 2> delayLines;
+            void prepare(const juce::dsp::ProcessSpec& spec) { 
+                for(auto& d : delayLines) { 
+                    d.prepare(spec);
+                }
+            }
+
+            void setMaximumDelayInSamples(int newMax) { 
+                for(auto& d : delayLines) { 
+                    d.setMaximumDelayInSamples(newMax);
+                }
+            }
+
+            void setDelay(int newDelaySamples) { 
+                for(auto& d : delayLines) { 
+                    d.setDelay(newDelaySamples);
+                }
+            }
+
+            SDSP_INLINE std::tuple<float, float> popSample() noexcept { 
+                auto real = delayLines[0].popSample(0);
+                auto imag = delayLines[1].popSample(0);
+                return {real, imag};
+            }
+
+            SDSP_INLINE void pushSample(const std::tuple<float, float>& toPush) noexcept { 
+                auto [real, imag] = toPush;
+                delayLines[0].pushSample(0, real);
+                delayLines[1].pushSample(0, imag);
+            }
+        };
+        std::vector<ComplexDelayLine> m_delayLines;
         // 256 fucking delay lines LOL 
         bool m_hasBeenPrepared{false};
-        std::vector<SDSP::CircularBuffer<STFTPair> > m_delayLines;
+        //std::vector<SDSP::CircularBuffer<STFTPair> > m_delayLines;
         STFTPair m_prev;
         float m_feedback{ 0.0f };
         juce::SmoothedValue<float> m_smoothedFeedback;

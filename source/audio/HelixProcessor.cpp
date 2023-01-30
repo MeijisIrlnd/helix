@@ -51,7 +51,7 @@ namespace Helix
             float feedback = m_smoothedFeedback.getNextValue(); 
             for(auto channel = 0; channel < buffer.getNumChannels(); channel++) { 
                 float current = m_delayLines[channel].getNextSample(read[channel][sample] + (m_prev[channel] * feedback));
-                m_prev[channel] = m_frequencyDelays[channel].processSample(static_cast<size_t>(buffer.getNumChannels()), current);
+                m_prev[channel] = m_frequencyDelays[channel].processSample(static_cast<size_t>(buffer.getNumSamples()), current);
                 m_prev[channel] = m_highShelves[channel].processSample(m_prev[channel]);
                 write[channel][sample] = current;
             }

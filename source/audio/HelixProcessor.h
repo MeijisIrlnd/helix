@@ -24,7 +24,7 @@ namespace Helix
         std::array<float, 2> m_prev;
         std::array<SDSP::CircularBuffer<float>, 2> m_delayLines;
         std::array<Helix::FrequencyDelay, 2> m_frequencyDelays;
-        float m_feedback{0.3f};
+        float m_feedback{0.4f};
         float m_delayTimeSeconds{0.05f};
         SDSP::SmoothedFilterCoefficients<2> m_coeffs;
         std::array<SDSP::BiquadCascade<2>, 2> m_highShelves;

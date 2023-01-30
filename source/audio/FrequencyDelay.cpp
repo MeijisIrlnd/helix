@@ -22,10 +22,10 @@ namespace Helix
 
     void FrequencyDelay::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
     {
+        juce::dsp::ProcessSpec spec{sampleRate / 256.0, static_cast<juce::uint32>(samplesPerBlockExpected), 1};
         m_sampleRate = sampleRate;
-        for (size_t i = 0; i < m_delayLines.size(); i++) {
-            m_delayLines[i].prepare(samplesPerBlockExpected, sampleRate / 256);
-            m_delayLines[i].setInterpolationRate(500);
+        for (size_t i = 0; i < 256; i++) {
+            m_delayLines[i].prepare(spec);
             double currentMax;
             double scaledDelayTime{ 0 };
             if (i <= 29) {
@@ -37,10 +37,11 @@ namespace Helix
                 scaledDelayTime = juce::jmap<float>(dtNorm, 0, 40, 0, 0.2);
             }
             else {
-                scaledDelayTime = 0;
+                scaledDelayTime = 0.01;
             }
             currentMax = scaledDelayTime;
-            m_delayLines[i].setMaxDelaySeconds(currentMax + 0.1);
+            m_delayLines[i].setMaximumDelayInSamples(static_cast<int>((currentMax + 0.1) * sampleRate));
+
             scaledDelayTime = static_cast<int>(scaledDelayTime * sampleRate / 256);
             m_delayLines[i].setDelay(scaledDelayTime);
         }
@@ -87,6 +88,7 @@ namespace Helix
 
     void FrequencyDelay::setHighestBinDelayTime(float delayTimeSeconds)
     {
+        /*
         for (auto i = 0; i < m_delayLines.size(); i++) {
             float currentScaled = 0;
             if (i <= 29) {
@@ -95,6 +97,7 @@ namespace Helix
 
             m_delayLines[i].setDelay(static_cast<int>(currentScaled * (m_sampleRate / 256.0f)));
         }
+        */
     }
 
     void FrequencyDelay::setFeedback(float feedback) { 
@@ -108,10 +111,11 @@ namespace Helix
     {
         for (auto i = 0; i < size - 1; i += 2) {
             STFTPair incoming{ {data[i], data[i + 1]} };
-            STFTPair read = m_delayLines[i / 2].getNextSample(incoming + (m_prev * m_feedback));
-            data[i] = read[0];
-            data[i + 1] = read[1];
-            m_prev = read;
+            auto [real, imag] = m_delayLines[i / 2].popSample();
+            m_delayLines[i / 2].pushSample({incoming[0] + (m_prev[0] * m_feedback), incoming[1] + (m_prev[1] * m_feedback)});
+            data[i] = real;
+            data[i + 1] = imag;
+            m_prev = STFTPair{real, imag};
         }
     }
 }
