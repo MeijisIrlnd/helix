@@ -1,5 +1,7 @@
+![Status](https://github.com/MeijisIrlnd/Helix/actions/workflows/ci.yml/badge.svg)
 <h1>helix</h1>
 <h3>an algorithmic spring reverb</h3>
+
 <br>
 <h2>about</h2>
 helix is an algorithmic spring reverb, which excels at spring "drip" sounds. it's based around a technique suggested by geraint from 
